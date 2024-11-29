@@ -1,6 +1,8 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 // couple of to-do's:
 // menu options:
@@ -36,25 +38,54 @@ import java.awt.event.ActionListener;
     // orderStatus()
 // check part II for more if needed
 public class Main extends JFrame {
-    private JLabel jsFirstName;
-    private JTextField jsTextField;
-    private JButton jsButton1;
-    private JPanel MainPanel;
+    private JLabel account;
+    private JTextField emailTextField;
+    private JButton languageButton;
+    private JPanel mainPanel;
+    private JButton emailLoginButton;
+    private JButton phoneLoginButton;
+    private JTextField phoneTextField;
 
     public Main() {
-        setContentPane(MainPanel);
-        setTitle("Simple GUI App");
+        setContentPane(mainPanel);
+        setTitle("Restaurant Kiosk");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300, 200);
+        setSize(1280, 720);
         setLocationRelativeTo(null);
         setVisible(true);
         // could replace this with lambda, won't for now
-        jsButton1.addActionListener(new ActionListener() {
+        languageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String firstName = jsTextField.getText();
-                jsFirstName.setText(firstName);
-                JOptionPane.showMessageDialog(Main.this, "Welcome: " + firstName + "!");
+                //CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+                //cardLayout.show(mainPanel, "Language Panel");
+                // make this or other class needed to show dialog box with language options we can pick
+            }
+        });
+        emailLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String email = emailTextField.getText();
+                if (Objects.equals(email, "burgerLover72@gmail.com")) {
+                    account.setText("Profile: Bob Burger");
+                    JOptionPane.showMessageDialog(Main.this, "Welcome: Bob!");
+                }
+                else {
+                    JOptionPane.showMessageDialog(Main.this, "Account under '" + email + "' not found!");
+                }
+            }
+        });
+        phoneLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String number = phoneTextField.getText();
+                if(Objects.equals(number, "937-999-9999")) {
+                    account.setText("Profile: Bob Burger");
+                    JOptionPane.showMessageDialog(Main.this, "Welcome: Bob!");
+                }
+                else {
+                    JOptionPane.showMessageDialog(Main.this, "Account under '" + number + "' not found!");
+                }
             }
         });
     }
