@@ -222,7 +222,7 @@ public class RestaurantKiosk {
         panel.add(buttonPanel, BorderLayout.CENTER);
 
         // Image label
-        ImageIcon mcburgerIcon = new ImageIcon(new ImageIcon("src/McBurger.jpg").getImage().getScaledInstance(256, 256, Image.SCALE_SMOOTH));
+        ImageIcon mcburgerIcon = new ImageIcon(new ImageIcon("src/main/java/McBurger.jpg").getImage().getScaledInstance(256, 256, Image.SCALE_SMOOTH));
         JLabel mcburgerLabel = new JLabel(mcburgerIcon);
         mcburgerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -262,7 +262,7 @@ public class RestaurantKiosk {
         // Menu items
         String[] itemNames = {"Burger", "Pizza", "Pasta", "Salad"};
         double[] itemPrices = {9.99, 11.99, 12.99, 7.99};
-        String[] itemImages = {"src//Burger.jpg", "src//Pizza.jpg", "src//Pasta.jpg", "src//Salad.jpg"}; // Image file paths
+        String[] itemImages = {"src/main/java/Burger.jpg", "src/main/java/Pizza.jpg", "src/main/java/Pasta.jpg", "src/main/java/Salad.jpg"}; // Image file paths
 
         for (int i = 0; i < itemNames.length; i++) {
             JButton itemButton = createMenuItemButtonWithImage(itemNames[i], itemPrices[i], itemImages[i]);
