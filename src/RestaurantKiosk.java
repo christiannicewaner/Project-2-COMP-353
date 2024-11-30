@@ -28,6 +28,8 @@ public class RestaurantKiosk {
         JPanel customizePastaPanel = createCustomizePastaPanel();
         JPanel customizeSaladPanel = createCustomizeSaladPanel();
         JPanel orderSummaryPanel = createOrderSummaryPanel();
+        JPanel emailLoginPanel = createEmailLoginPanel();
+        JPanel phoneLoginPanel = createPhoneLoginPanel();
 
         // Add Panels to Main Panel
         mainPanel.add(homePanel, "Home");
@@ -37,10 +39,70 @@ public class RestaurantKiosk {
         mainPanel.add(customizePastaPanel, "Customize Pasta");
         mainPanel.add(customizeSaladPanel, "Customize Salad");
         mainPanel.add(orderSummaryPanel, "Order Summary");
+        mainPanel.add(emailLoginPanel, "Email Login");
+        mainPanel.add(phoneLoginPanel, "Phone Login");
 
         // Show Home Panel Initially
         cardLayout.show(mainPanel, "Home");
     }
+
+
+    // Email Login Panel
+    private JPanel createEmailLoginPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("Enter your Email Address", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        JTextField emailField = new JTextField();
+        panel.add(emailField, BorderLayout.CENTER);
+
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
+                if (emailField.getText().matches(emailPattern)) {
+                    cardLayout.show(mainPanel, "Menu");
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Invalid email address.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        panel.add(loginButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    // Phone Login Panel
+    private JPanel createPhoneLoginPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("Enter your Phone Number (XXX-XXX-XXXX)", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        JTextField phoneField = new JTextField();
+        panel.add(phoneField, BorderLayout.CENTER);
+
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String phonePattern = "^\\d{3}-\\d{3}-\\d{4}$";
+                if (phoneField.getText().matches(phonePattern)) {
+                    cardLayout.show(mainPanel, "Menu");
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Invalid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        panel.add(loginButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
 
     // Order class to keep track of items and total price
     public static class Order {
@@ -96,6 +158,22 @@ public class RestaurantKiosk {
             }
         });
 
+        // Add action listener to the "Login with Email" button
+        emailLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Email Login");
+            }
+        });
+
+        // Add action listener to the "Login with Phone" button
+        phoneLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Phone Login");
+            }
+        });
+
         // Add buttons to the button panel
         buttonPanel.add(toMenuButton);
         buttonPanel.add(emailLoginButton);
@@ -106,6 +184,7 @@ public class RestaurantKiosk {
 
         return panel;
     }
+
 
     // Menu Panel
     private JPanel createMenuPanel() {
@@ -404,8 +483,6 @@ public class RestaurantKiosk {
         summary.append("Total: $").append(currentOrder.getTotalPrice());
         summaryTextArea.setText(summary.toString());
     }
-
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Restaurant Kiosk");
