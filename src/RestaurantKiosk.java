@@ -12,6 +12,7 @@ public class RestaurantKiosk {
     private final Order currentOrder;
     private String currentItemName;
     private double currentItemPrice;
+    private String currentLanguage = "English";
 
     // Create the account label at the class level
     private final JLabel accountLabel = new JLabel("");
@@ -42,6 +43,7 @@ public class RestaurantKiosk {
         JPanel emailLoginPanel = createEmailLoginPanel();
         JPanel phoneLoginPanel = createPhoneLoginPanel();
         JPanel languageSelectionPanel = createLanguageSelectionPanel();
+        JPanel progressScreen = createProgressScreenPanel();
 
         // Add Panels to Main Panel
         mainPanel.add(homePanel, "Home");
@@ -55,6 +57,7 @@ public class RestaurantKiosk {
         mainPanel.add(emailLoginPanel, "Email Login");
         mainPanel.add(phoneLoginPanel, "Phone Login");
         mainPanel.add(languageSelectionPanel, "Language Selection");
+        mainPanel.add(createProgressScreenPanel(), "Progress Screen");
 
         // Show Home Panel Initially
         cardLayout.show(mainPanel, "Home");
@@ -265,18 +268,21 @@ public class RestaurantKiosk {
         frenchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                currentLanguage = "French";
                 cardLayout.show(mainPanel, "Home");
             }
         });
         germanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                currentLanguage = "German";
                 cardLayout.show(mainPanel, "Home");
             }
         });
         spanishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                currentLanguage = "Spanish";
                 cardLayout.show(mainPanel, "Home");
             }
         });
@@ -696,9 +702,9 @@ public class RestaurantKiosk {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 
-        // Back to Home button
-        JButton backButton = new JButton("Back to Home");
-        backButton.addActionListener(new ActionListener() {
+        // Cancel Order button
+        JButton cancelButton = new JButton("Cancel Order");
+        cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Reset order and go to home screen
@@ -708,7 +714,23 @@ public class RestaurantKiosk {
                 mainPanel.repaint();
             }
         });
-        buttonsPanel.add(backButton);
+        buttonsPanel.add(cancelButton);
+
+        // Add some space between buttons
+        buttonsPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        // Back to Menu button
+        JButton backToMenuButton = new JButton("Back to Menu");
+        backToMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Go to menu screen
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        buttonsPanel.add(backToMenuButton);
 
         // Add some space between buttons
         buttonsPanel.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -731,6 +753,7 @@ public class RestaurantKiosk {
 
         return panel;
     }
+
 
     // Payment Panel
     private JPanel createPaymentPanel() {
@@ -758,6 +781,7 @@ public class RestaurantKiosk {
         inputPanel.add(cardNumberLabel, gbc);
         inputPanel.add(cardNumberField, gbc);
 
+        // Pay Button
         JButton payButton = new JButton("Pay");
         payButton.addActionListener(new ActionListener() {
             @Override
@@ -770,7 +794,7 @@ public class RestaurantKiosk {
                     currentOrder.clear();
                     accountLabel.setText("");
                     cardNumberField.setText("");
-                    cardLayout.show(mainPanel, "Home");
+                    cardLayout.show(mainPanel, "Progress Screen");
                     mainPanel.revalidate();
                     mainPanel.repaint();
                 } else {
@@ -782,6 +806,23 @@ public class RestaurantKiosk {
         gbc.gridy = GridBagConstraints.RELATIVE;
         gbc.anchor = GridBagConstraints.PAGE_END;
         inputPanel.add(payButton, gbc);
+
+        // Back to Order Summary Button
+        JButton backButton = new JButton("Back to Order Summary");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show the order summary screen
+                cardLayout.show(mainPanel, "Order Summary");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.gridx = 0; // Keep alignment
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        inputPanel.add(backButton, gbc);
 
         panel.add(inputPanel, BorderLayout.CENTER);
 
@@ -808,6 +849,77 @@ public class RestaurantKiosk {
         summary.append("Total: $").append(currentOrder.getTotalPrice());
         summaryTextArea.setText(summary.toString());
     }
+
+    // Progress Screen Panel
+    private JPanel createProgressScreenPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JLabel progressLabel = new JLabel("Processing your order, please wait...", SwingConstants.CENTER);
+        progressLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(progressLabel, BorderLayout.NORTH);
+
+        // Create Progress Bar
+        JProgressBar progressBar = new JProgressBar(0, 3);
+        progressBar.setStringPainted(true);
+        panel.add(progressBar, BorderLayout.CENTER);
+
+        // Countdown label
+        JLabel countdownLabel = new JLabel("", SwingConstants.CENTER);
+        countdownLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(countdownLabel, BorderLayout.SOUTH);
+
+        // SwingWorker to update progress
+        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                String[] steps = {"Order Received", "Preparing Order", "Ready for Pickup!"};
+                for (int i = 0; i < steps.length; i++) {
+                    Thread.sleep(6666);
+                    publish(i + 1);
+                }
+                return null;
+            }
+
+            @Override
+            protected void process(List<Integer> chunks) {
+                int progress = chunks.getLast();
+                progressBar.setValue(progress);
+                switch (progress) {
+                    case 1:
+                        progressBar.setString("Order Received");
+                        break;
+                    case 2:
+                        progressBar.setString("Preparing Order");
+                        progressBar.setFont(new Font("Serif", Font.BOLD, 24));
+                        break;
+                    case 3:
+                        progressBar.setString("Ready for Pickup!");
+                        progressBar.setFont(new Font("Serif", Font.BOLD, 36));
+                        startCountdown(countdownLabel);
+                        panel.remove(progressLabel);
+                        break;
+                }
+            }
+
+            private void startCountdown(JLabel label) {
+                new Thread (() -> {
+                    for (int i = 3; i > 0; i--){
+                        try {
+                            int finalI = i;
+                            SwingUtilities.invokeLater(() -> label.setText("Returning to home in " + finalI + "..."));
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    SwingUtilities.invokeLater(() -> cardLayout.show(mainPanel, "Home"));
+                }).start();
+            }
+        };
+        worker.execute();
+        return panel;
+    }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Restaurant Kiosk");
