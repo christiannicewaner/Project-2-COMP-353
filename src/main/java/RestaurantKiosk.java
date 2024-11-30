@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class RestaurantKiosk {
     public static JPanel mainPanel;
-    public static CardLayout cardLayout = null;
+    public static CardLayout cardLayout;
     public static Order currentOrder;
     public static String currentItemName;
     public static double currentItemPrice;
@@ -11,7 +11,7 @@ public class RestaurantKiosk {
     // Create the account label at the class level
     public static final JLabel accountLabel = new JLabel("");
 
-    public RestaurantKiosk() {
+    private RestaurantKiosk() {
         // Setup Main Panel with CardLayout
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
