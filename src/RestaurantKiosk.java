@@ -58,8 +58,6 @@ public class RestaurantKiosk {
         cardLayout.show(mainPanel, "Home");
     }
 
-
-
     // Email Login Panel
     private JPanel createEmailLoginPanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -69,6 +67,8 @@ public class RestaurantKiosk {
         panel.add(titleLabel, BorderLayout.NORTH);
 
         JTextField emailField = new JTextField();
+        emailField.setHorizontalAlignment(JTextField.CENTER);
+        emailField.setFont(new Font("Serif", Font.BOLD,  48));
         panel.add(emailField, BorderLayout.CENTER);
 
         JButton loginButton = new JButton("Login");
@@ -99,6 +99,8 @@ public class RestaurantKiosk {
         panel.add(titleLabel, BorderLayout.NORTH);
 
         JTextField phoneField = new JTextField();
+        phoneField.setHorizontalAlignment(JTextField.CENTER);
+        phoneField.setFont(new Font("Serif", Font.BOLD,48));
         panel.add(phoneField, BorderLayout.CENTER);
 
         JButton loginButton = new JButton("Login");
