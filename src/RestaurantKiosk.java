@@ -50,6 +50,7 @@ public class RestaurantKiosk {
         mainPanel.add(customizePastaPanel, "Customize Pasta");
         mainPanel.add(customizeSaladPanel, "Customize Salad");
         mainPanel.add(orderSummaryPanel, "Order Summary");
+        mainPanel.add(createPaymentPanel(), "Payment");
         mainPanel.add(emailLoginPanel, "Email Login");
         mainPanel.add(phoneLoginPanel, "Phone Login");
         mainPanel.add(languageSelectionPanel, "Language Selection");
@@ -410,6 +411,9 @@ public class RestaurantKiosk {
         checkBoxPanel.add(cheeseCheckBox);
         checkBoxPanel.add(onionsCheckBox);
 
+        // Nutritional Information Panel
+        JPanel nutritionPanel = createBurgerInfoPanel();
+
         // Done Customizing button
         JButton doneButton = new JButton("Done Customizing");
         doneButton.addActionListener(new ActionListener() {
@@ -433,11 +437,31 @@ public class RestaurantKiosk {
         });
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
         panel.add(doneButton, BorderLayout.SOUTH);
-
 
         return panel;
     }
+
+    // Create Burger Nutritional Information Panel
+    private JPanel createBurgerInfoPanel() {
+        JPanel nutritionPanel = new JPanel();
+        nutritionPanel.setLayout(new BoxLayout(nutritionPanel, BoxLayout.Y_AXIS));
+        nutritionPanel.setBorder(BorderFactory.createTitledBorder("Nutrition Info"));
+
+        JLabel caloriesLabel = new JLabel("Calories: 390");
+        JLabel fatLabel = new JLabel("Fat: 20g");
+        JLabel carbsLabel = new JLabel("Carbohydrates: 32g");
+        JLabel proteinLabel = new JLabel("Protein: 22g");
+
+        nutritionPanel.add(caloriesLabel);
+        nutritionPanel.add(fatLabel);
+        nutritionPanel.add(carbsLabel);
+        nutritionPanel.add(proteinLabel);
+
+        return nutritionPanel;
+    }
+
 
 
     // Customization Panel for Pizza
@@ -460,6 +484,9 @@ public class RestaurantKiosk {
         checkBoxPanel.add(mushroomsCheckBox);
         checkBoxPanel.add(olivesCheckBox);
         checkBoxPanel.add(onionsCheckBox);
+
+        // Nutritional Information Panel
+        JPanel nutritionPanel = createPizzaInfoPanel();
 
         // Done Customizing button
         JButton doneButton = new JButton("Done Customizing");
@@ -484,9 +511,29 @@ public class RestaurantKiosk {
         });
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
         panel.add(doneButton, BorderLayout.SOUTH);
 
         return panel;
+    }
+
+    // Create Pizza Nutritional Information Panel
+    private JPanel createPizzaInfoPanel() {
+        JPanel nutritionPanel = new JPanel();
+        nutritionPanel.setLayout(new BoxLayout(nutritionPanel, BoxLayout.Y_AXIS));
+        nutritionPanel.setBorder(BorderFactory.createTitledBorder("Nutrition Info"));
+
+        JLabel caloriesLabel = new JLabel("Calories: 285");
+        JLabel fatLabel = new JLabel("Fat: 10g");
+        JLabel carbsLabel = new JLabel("Carbohydrates: 36g");
+        JLabel proteinLabel = new JLabel("Protein: 12g");
+
+        nutritionPanel.add(caloriesLabel);
+        nutritionPanel.add(fatLabel);
+        nutritionPanel.add(carbsLabel);
+        nutritionPanel.add(proteinLabel);
+
+        return nutritionPanel;
     }
 
     // Customization Panel for Pasta
@@ -509,6 +556,9 @@ public class RestaurantKiosk {
         checkBoxPanel.add(cheeseCheckBox);
         checkBoxPanel.add(garlicCheckBox);
         checkBoxPanel.add(mushroomsCheckBox);
+
+        // Nutritional Information Panel
+        JPanel nutritionPanel = createPastaInfoPanel();
 
         // Done Customizing button
         JButton doneButton = new JButton("Done Customizing");
@@ -533,9 +583,29 @@ public class RestaurantKiosk {
         });
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
         panel.add(doneButton, BorderLayout.SOUTH);
 
         return panel;
+    }
+
+    // Create Pasta Nutritional Information Panel
+    private JPanel createPastaInfoPanel() {
+        JPanel nutritionPanel = new JPanel();
+        nutritionPanel.setLayout(new BoxLayout(nutritionPanel, BoxLayout.Y_AXIS));
+        nutritionPanel.setBorder(BorderFactory.createTitledBorder("Nutrition Info"));
+
+        JLabel caloriesLabel = new JLabel("Calories: 434");
+        JLabel fatLabel = new JLabel("Fat: 12g");
+        JLabel carbsLabel = new JLabel("Carbohydrates: 47g");
+        JLabel proteinLabel = new JLabel("Protein: 31g");
+
+        nutritionPanel.add(caloriesLabel);
+        nutritionPanel.add(fatLabel);
+        nutritionPanel.add(carbsLabel);
+        nutritionPanel.add(proteinLabel);
+
+        return nutritionPanel;
     }
 
     // Customization Panel for Salad
@@ -558,6 +628,9 @@ public class RestaurantKiosk {
         checkBoxPanel.add(dressingCheckBox);
         checkBoxPanel.add(cheeseCheckBox);
         checkBoxPanel.add(baconBitsCheckBox);
+
+        // Nutritional Information Panel
+        JPanel nutritionPanel = createSaladInfoPanel();
 
         // Done Customizing button
         JButton doneButton = new JButton("Done Customizing");
@@ -582,9 +655,29 @@ public class RestaurantKiosk {
         });
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
         panel.add(doneButton, BorderLayout.SOUTH);
 
         return panel;
+    }
+
+    // Create Salad Nutritional Information Panel
+    private JPanel createSaladInfoPanel() {
+        JPanel nutritionPanel = new JPanel();
+        nutritionPanel.setLayout(new BoxLayout(nutritionPanel, BoxLayout.Y_AXIS));
+        nutritionPanel.setBorder(BorderFactory.createTitledBorder("Nutrition Info"));
+
+        JLabel caloriesLabel = new JLabel("Calories: 491");
+        JLabel fatLabel = new JLabel("Fat: 19g");
+        JLabel carbsLabel = new JLabel("Carbohydrates: 42g");
+        JLabel proteinLabel = new JLabel("Protein: 39g");
+
+        nutritionPanel.add(caloriesLabel);
+        nutritionPanel.add(fatLabel);
+        nutritionPanel.add(carbsLabel);
+        nutritionPanel.add(proteinLabel);
+
+        return nutritionPanel;
     }
 
     // Order Summary Panel
@@ -595,6 +688,12 @@ public class RestaurantKiosk {
         panel.add(new JScrollPane(summaryTextArea), BorderLayout.CENTER);
 
         panel.add(createAccountLabelPanel(), BorderLayout.NORTH);
+
+        // Create panel for buttons
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
+        // Back to Home button
         JButton backButton = new JButton("Back to Home");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -606,11 +705,63 @@ public class RestaurantKiosk {
                 mainPanel.repaint();
             }
         });
-        panel.add(backButton, BorderLayout.SOUTH);
+        buttonsPanel.add(backButton);
+
+        // Add some space between buttons
+        buttonsPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        // Proceed to Payment button
+        JButton proceedButton = new JButton("Proceed to Payment");
+        proceedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Go to payment screen
+                cardLayout.show(mainPanel, "Payment");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        buttonsPanel.add(proceedButton);
+
+        // Add buttons panel to the main panel
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
 
         return panel;
     }
 
+    // Payment Panel
+    private JPanel createPaymentPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("Enter Card Information", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
+        JTextField cardNumberField = new JTextField(20);
+        inputPanel.add(new JLabel("Card Number:"));
+        inputPanel.add(cardNumberField);
+
+        JButton payButton = new JButton("Pay");
+        payButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cardNumber = cardNumberField.getText();
+                // Handle payment process
+                JOptionPane.showMessageDialog(panel, "Payment processed for card: " + cardNumber);
+                cardLayout.show(mainPanel, "Home");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        panel.add(inputPanel, BorderLayout.CENTER);
+        panel.add(payButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
 
     // Update the order summary
     private void updateOrderSummary() {
