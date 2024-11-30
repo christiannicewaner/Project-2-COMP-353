@@ -51,5 +51,4 @@ public class EmailLoginPanel {
 
         return panel;
     }
-
 }

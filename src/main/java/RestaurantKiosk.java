@@ -9,7 +9,7 @@ public class RestaurantKiosk {
     public static double currentItemPrice;
 
     // Create the account label at the class level
-    public static final JLabel accountLabel = new JLabel("");
+    public static JLabel accountLabel = new JLabel("");
 
     private RestaurantKiosk() {
         // Setup Main Panel with CardLayout
