@@ -43,7 +43,6 @@ public class RestaurantKiosk {
         JPanel emailLoginPanel = createEmailLoginPanel();
         JPanel phoneLoginPanel = createPhoneLoginPanel();
         JPanel languageSelectionPanel = createLanguageSelectionPanel();
-        JPanel progressScreen = createProgressScreenPanel();
 
         // Add Panels to Main Panel
         mainPanel.add(homePanel, "Home");
@@ -57,7 +56,7 @@ public class RestaurantKiosk {
         mainPanel.add(emailLoginPanel, "Email Login");
         mainPanel.add(phoneLoginPanel, "Phone Login");
         mainPanel.add(languageSelectionPanel, "Language Selection");
-        mainPanel.add(createProgressScreenPanel(), "Progress Screen");
+        //mainPanel.add(createProgressScreenPanel(), "Progress Screen");
 
         // Show Home Panel Initially
         cardLayout.show(mainPanel, "Home");
@@ -336,6 +335,13 @@ public class RestaurantKiosk {
 
         // Add the account label panel at the top
         JPanel topPanel = new JPanel(new BorderLayout());
+
+        // Create a label to display "Account: " and the accountLabel text
+        JLabel accountInfoLabel = new JLabel("Account: " + accountLabel.getText());
+        accountInfoLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        topPanel.add(accountInfoLabel, BorderLayout.EAST);
+
+        // Add the account label panel to the topPanel
         topPanel.add(createAccountLabelPanel(), BorderLayout.EAST);
         panel.add(topPanel, BorderLayout.NORTH);
 
@@ -363,12 +369,12 @@ public class RestaurantKiosk {
             public void actionPerformed(ActionEvent e) {
                 if (!accountLabel.getText().isEmpty()) {
                     String history = """
-                            10/25/2024
-                            18:34
-                            2 x Pizza: $23.98
-                            1 x Burger: $9.99
-                            Total: $33.97""";
-                    JOptionPane.showMessageDialog(panel, history, "Order History", JOptionPane.INFORMATION_MESSAGE);
+                        10/25/2024
+                        18:34
+                        2 x Pizza: $23.98
+                        1 x Burger: $9.99
+                        Total: $33.97""";
+                    JOptionPane.showMessageDialog(panel, history, "Order History for " + accountLabel.getText(), JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(panel, "Please log in to view your order history.", "Order History", JOptionPane.WARNING_MESSAGE);
                 }
@@ -829,9 +835,11 @@ public class RestaurantKiosk {
                     currentOrder.clear();
                     accountLabel.setText("");
                     cardNumberField.setText("");
+                    mainPanel.add(createProgressScreenPanel(), "Progress Screen");
                     cardLayout.show(mainPanel, "Progress Screen");
                     mainPanel.revalidate();
                     mainPanel.repaint();
+
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid card number. Please enter a valid credit card number.");
                 }
