@@ -6,11 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantKiosk {
-    private JPanel mainPanel;
+    private final JPanel mainPanel;
+    private final CardLayout cardLayout;
+    private final Order currentOrder;
 
     public RestaurantKiosk() {
         // Setup Main Panel with CardLayout
-        mainPanel.setLayout(new CardLayout());
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        // Initialize Order
+        currentOrder = new Order();
 
         // Initialize Panels
         JPanel homePanel = createHomePanel();
@@ -23,67 +29,90 @@ public class RestaurantKiosk {
         mainPanel.add(orderSummaryPanel, "Order Summary");
 
         // Show Home Panel Initially
-        ((CardLayout) mainPanel.getLayout()).show(mainPanel, "Home");
+        cardLayout.show(mainPanel, "Home");
     }
 
-
+    // Order class to keep track of items and total price
     public static class Order {
-        // final does not make it immutable
-        private final List<MenuItem> items;
+        private final List<String> items;
+        private double totalPrice;
 
         public Order() {
             items = new ArrayList<>();
+            totalPrice = 0.0;
         }
 
         public void addItem(String name, double price) {
-            items.add(new MenuItem(name, price));
+            items.add(name);
+            totalPrice += price;
         }
 
-        public void printOrder() {
-            for (MenuItem item : items) {
-                System.out.println(item);
-            }
+        public List<String> getItems() {
+            return items;
+        }
+
+        public double getTotalPrice() {
+            return totalPrice;
+        }
+
+        public void clear() {
+            items.clear();
+            totalPrice = 0.0;
         }
     }
 
+    // Home Panel
     private JPanel createHomePanel() {
-        JPanel buttonPanel = new JPanel();
         JPanel panel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+
+        // Create title label
+        JLabel titleLabel = new JLabel("Welcome to McBurger!", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 36)); // Set font size and style
+
+        // Add title label to the top of the panel
+        panel.add(titleLabel, BorderLayout.NORTH);
+
         JButton toMenuButton = new JButton("Continue as Guest");
         JButton emailLoginButton = new JButton("Login with Email");
-        JButton phoneLoginButton = new JButton(("Login with Phone"));
+        JButton phoneLoginButton = new JButton("Login with Phone");
 
-        buttonPanel.add(toMenuButton);
-        buttonPanel.add(emailLoginButton);
-        buttonPanel.add(phoneLoginButton);
-        buttonPanel.add(Box.createVerticalStrut(10));
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
+        // Add action listener to the "Continue as Guest" button
         toMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) mainPanel.getLayout()).show(mainPanel, "Menu");
+                cardLayout.show(mainPanel, "Menu");
             }
         });
+
+        // Add buttons to the button panel
+        buttonPanel.add(toMenuButton);
+        buttonPanel.add(emailLoginButton);
+        buttonPanel.add(phoneLoginButton);
+
+        // Center the buttons in the main panel
+        panel.add(buttonPanel, BorderLayout.CENTER);
 
         return panel;
     }
 
+    // Menu Panel
     private JPanel createMenuPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Example menu items
+        // Menu items
         String[] itemNames = {"Burger", "Pizza", "Pasta", "Salad"};
-        String[] imagePaths = {"Burger.jpg", "Pizza.jpg", "Pasta.jpg", "Salad.jpg"};
+        double[] itemPrices = {9.99, 11.99, 12.99, 7.99};
 
         for (int i = 0; i < itemNames.length; i++) {
-            JPanel itemPanel = createMenuItemPanel(itemNames[i], imagePaths[i]);
-            gbc.gridx = i % 2;  // Adjust for two columns
+            JButton itemButton = createMenuItemButton(itemNames[i], itemPrices[i]);
+            gbc.gridx = i % 2;
             gbc.gridy = i / 2;
-            panel.add(itemPanel, gbc);
+            panel.add(itemButton, gbc);
         }
 
         JButton toOrderSummaryButton = new JButton("Order Summary");
@@ -95,56 +124,68 @@ public class RestaurantKiosk {
         toOrderSummaryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) mainPanel.getLayout()).show(mainPanel, "Order Summary");
+                updateOrderSummary();
+                cardLayout.show(mainPanel, "Order Summary");
+                mainPanel.revalidate();
+                mainPanel.repaint();
             }
         });
 
         return panel;
     }
 
-    private JPanel createMenuItemPanel(String itemName, String imagePath) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        // Load and resize image
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image img = icon.getImage();
-        Image resizedImg = img.getScaledInstance(150, 150, Image.SCALE_SMOOTH);  // Resize image to fit panel
-        ImageIcon resizedIcon = new ImageIcon(resizedImg);
-
-        JLabel imageLabel = new JLabel(resizedIcon);
-        panel.add(imageLabel);
-
-        // Add button
-        JButton button = new JButton("Order " + itemName);
-        panel.add(button);
-
-        return panel;
+    // Create Menu Item Button
+    private JButton createMenuItemButton(String itemName, double itemPrice) {
+        JButton button = new JButton(itemName + " - $" + itemPrice);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentOrder.addItem(itemName, itemPrice);
+            }
+        });
+        return button;
     }
 
-
+    // Order Summary Panel
     private JPanel createOrderSummaryPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        JLabel summaryLabel = new JLabel("Order Summary", SwingConstants.CENTER);
-        JButton backButton = new JButton("Back to Menu");
+        JTextArea summaryTextArea = new JTextArea(10, 30);
+        summaryTextArea.setEditable(false);
+        panel.add(new JScrollPane(summaryTextArea), BorderLayout.CENTER);
 
+        JButton backButton = new JButton("Back to Menu");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) mainPanel.getLayout()).show(mainPanel, "Menu");
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
             }
         });
-
-        panel.add(summaryLabel, BorderLayout.CENTER);
         panel.add(backButton, BorderLayout.SOUTH);
+
         return panel;
+    }
+
+    // Update the order summary
+    private void updateOrderSummary() {
+        JPanel orderSummaryPanel = (JPanel) mainPanel.getComponent(2);
+        JScrollPane scrollPane = (JScrollPane) orderSummaryPanel.getComponent(0);
+        JTextArea summaryTextArea = (JTextArea) scrollPane.getViewport().getView();
+        StringBuilder summary = new StringBuilder();
+        for (String item : currentOrder.getItems()) {
+            summary.append(item).append("\n");
+        }
+        summary.append("Total: $").append(currentOrder.getTotalPrice());
+        summaryTextArea.setText(summary.toString());
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Restaurant Kiosk");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new RestaurantKiosk().mainPanel);
-        frame.setSize(1280,720);
+        RestaurantKiosk kiosk = new RestaurantKiosk();
+        frame.setContentPane(kiosk.mainPanel);
+        frame.setSize(800, 600);
         frame.setVisible(true);
     }
 }
