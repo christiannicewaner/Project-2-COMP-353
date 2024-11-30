@@ -9,6 +9,8 @@ public class RestaurantKiosk {
     private final JPanel mainPanel;
     private final CardLayout cardLayout;
     private final Order currentOrder;
+    private String currentItemName;
+    private double currentItemPrice;
 
     public RestaurantKiosk() {
         // Setup Main Panel with CardLayout
@@ -21,11 +23,19 @@ public class RestaurantKiosk {
         // Initialize Panels
         JPanel homePanel = createHomePanel();
         JPanel menuPanel = createMenuPanel();
+        JPanel customizeBurgerPanel = createCustomizeBurgerPanel();
+        JPanel customizePizzaPanel = createCustomizePizzaPanel();
+        JPanel customizePastaPanel = createCustomizePastaPanel();
+        JPanel customizeSaladPanel = createCustomizeSaladPanel();
         JPanel orderSummaryPanel = createOrderSummaryPanel();
 
         // Add Panels to Main Panel
         mainPanel.add(homePanel, "Home");
         mainPanel.add(menuPanel, "Menu");
+        mainPanel.add(customizeBurgerPanel, "Customize Burger");
+        mainPanel.add(customizePizzaPanel, "Customize Pizza");
+        mainPanel.add(customizePastaPanel, "Customize Pasta");
+        mainPanel.add(customizeSaladPanel, "Customize Salad");
         mainPanel.add(orderSummaryPanel, "Order Summary");
 
         // Show Home Panel Initially
@@ -140,10 +150,221 @@ public class RestaurantKiosk {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentOrder.addItem(itemName, itemPrice);
+                currentItemName = itemName;
+                currentItemPrice = itemPrice;
+                switch (itemName) {
+                    case "Burger":
+                        cardLayout.show(mainPanel, "Customize Burger");
+                        break;
+                    case "Pizza":
+                        cardLayout.show(mainPanel, "Customize Pizza");
+                        break;
+                    case "Pasta":
+                        cardLayout.show(mainPanel, "Customize Pasta");
+                        break;
+                    case "Salad":
+                        cardLayout.show(mainPanel, "Customize Salad");
+                        break;
+                }
+                mainPanel.revalidate();
+                mainPanel.repaint();
             }
         });
         return button;
+    }
+
+    // Customization Panel for Burger
+    private JPanel createCustomizeBurgerPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
+
+        JLabel titleLabel = new JLabel("Customize your Burger", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Add checkboxes for customization
+        JCheckBox lettuceCheckBox = new JCheckBox("Lettuce");
+        JCheckBox ketchupCheckBox = new JCheckBox("Ketchup");
+        JCheckBox cheeseCheckBox = new JCheckBox("Cheese");
+        JCheckBox onionsCheckBox = new JCheckBox("Onions");
+        checkBoxPanel.add(lettuceCheckBox);
+        checkBoxPanel.add(ketchupCheckBox);
+        checkBoxPanel.add(cheeseCheckBox);
+        checkBoxPanel.add(onionsCheckBox);
+
+        // Done Customizing button
+        JButton doneButton = new JButton("Done Customizing");
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringBuilder customizations = new StringBuilder(currentItemName);
+                if (lettuceCheckBox.isSelected()) customizations.append(" + Lettuce");
+                if (ketchupCheckBox.isSelected()) customizations.append(" + Ketchup");
+                if (cheeseCheckBox.isSelected()) customizations.append(" + Cheese");
+                if (onionsCheckBox.isSelected()) customizations.append(" + Onions");
+
+                currentOrder.addItem(customizations.toString(), currentItemPrice);
+                lettuceCheckBox.setSelected(false);
+                ketchupCheckBox.setSelected(false);
+                cheeseCheckBox.setSelected(false);
+                onionsCheckBox.setSelected(false);
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(doneButton, BorderLayout.SOUTH);
+
+
+        return panel;
+    }
+
+
+    // Customization Panel for Pizza
+    private JPanel createCustomizePizzaPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
+
+        JLabel titleLabel = new JLabel("Customize your Pizza", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Add checkboxes for customization
+        JCheckBox pepperoniCheckBox = new JCheckBox("Pepperoni");
+        JCheckBox mushroomsCheckBox = new JCheckBox("Mushrooms");
+        JCheckBox olivesCheckBox = new JCheckBox("Olives");
+        JCheckBox onionsCheckBox = new JCheckBox("Onions");
+        checkBoxPanel.add(pepperoniCheckBox);
+        checkBoxPanel.add(mushroomsCheckBox);
+        checkBoxPanel.add(olivesCheckBox);
+        checkBoxPanel.add(onionsCheckBox);
+
+        // Done Customizing button
+        JButton doneButton = new JButton("Done Customizing");
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringBuilder customizations = new StringBuilder(currentItemName);
+                if (pepperoniCheckBox.isSelected()) customizations.append(" + Pepperoni");
+                if (mushroomsCheckBox.isSelected()) customizations.append(" + Mushrooms");
+                if (olivesCheckBox.isSelected()) customizations.append(" + Olives");
+                if (onionsCheckBox.isSelected()) customizations.append(" + Onions");
+
+                currentOrder.addItem(customizations.toString(), currentItemPrice);
+                pepperoniCheckBox.setSelected(false);
+                mushroomsCheckBox.setSelected(false);
+                olivesCheckBox.setSelected(false);
+                onionsCheckBox.setSelected(false);
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(doneButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    // Customization Panel for Pasta
+    private JPanel createCustomizePastaPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
+
+        JLabel titleLabel = new JLabel("Customize your Pasta", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Add checkboxes for customization
+        JCheckBox sauceCheckBox = new JCheckBox("Extra Sauce");
+        JCheckBox cheeseCheckBox = new JCheckBox("Extra Cheese");
+        JCheckBox garlicCheckBox = new JCheckBox("Garlic");
+        JCheckBox mushroomsCheckBox = new JCheckBox("Mushrooms");
+        checkBoxPanel.add(sauceCheckBox);
+        checkBoxPanel.add(cheeseCheckBox);
+        checkBoxPanel.add(garlicCheckBox);
+        checkBoxPanel.add(mushroomsCheckBox);
+
+        // Done Customizing button
+        JButton doneButton = new JButton("Done Customizing");
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringBuilder customizations = new StringBuilder(currentItemName);
+                if (sauceCheckBox.isSelected()) customizations.append(" + Extra Sauce");
+                if (cheeseCheckBox.isSelected()) customizations.append(" + Extra Cheese");
+                if (garlicCheckBox.isSelected()) customizations.append(" + Garlic");
+                if (mushroomsCheckBox.isSelected()) customizations.append(" + Mushrooms");
+
+                currentOrder.addItem(customizations.toString(), currentItemPrice);
+                sauceCheckBox.setSelected(false);
+                cheeseCheckBox.setSelected(false);
+                garlicCheckBox.setSelected(false);
+                mushroomsCheckBox.setSelected(false);
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(doneButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    // Customization Panel for Salad
+    private JPanel createCustomizeSaladPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
+
+        JLabel titleLabel = new JLabel("Customize your Salad", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Add checkboxes for customization
+        JCheckBox croutonsCheckBox = new JCheckBox("Croutons");
+        JCheckBox dressingCheckBox = new JCheckBox("Dressing");
+        JCheckBox cheeseCheckBox = new JCheckBox("Cheese");
+        JCheckBox baconBitsCheckBox = new JCheckBox("Bacon Bits");
+        checkBoxPanel.add(croutonsCheckBox);
+        checkBoxPanel.add(dressingCheckBox);
+        checkBoxPanel.add(cheeseCheckBox);
+        checkBoxPanel.add(baconBitsCheckBox);
+
+        // Done Customizing button
+        JButton doneButton = new JButton("Done Customizing");
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringBuilder customizations = new StringBuilder(currentItemName);
+                if (croutonsCheckBox.isSelected()) customizations.append(" + Croutons");
+                if (dressingCheckBox.isSelected()) customizations.append(" + Dressing");
+                if (cheeseCheckBox.isSelected()) customizations.append(" + Cheese");
+                if (baconBitsCheckBox.isSelected()) customizations.append(" + Bacon Bits");
+
+                currentOrder.addItem(customizations.toString(), currentItemPrice);
+                croutonsCheckBox.setSelected(false);
+                dressingCheckBox.setSelected(false);
+                cheeseCheckBox.setSelected(false);
+                baconBitsCheckBox.setSelected(false);
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        panel.add(checkBoxPanel, BorderLayout.CENTER);
+        panel.add(doneButton, BorderLayout.SOUTH);
+
+        return panel;
     }
 
     // Order Summary Panel
@@ -153,11 +374,13 @@ public class RestaurantKiosk {
         summaryTextArea.setEditable(false);
         panel.add(new JScrollPane(summaryTextArea), BorderLayout.CENTER);
 
-        JButton backButton = new JButton("Back to Menu");
+        JButton backButton = new JButton("Back to Home");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Menu");
+                // Reset order and go to home screen
+                currentOrder.clear();
+                cardLayout.show(mainPanel, "Home");
                 mainPanel.revalidate();
                 mainPanel.repaint();
             }
@@ -167,18 +390,22 @@ public class RestaurantKiosk {
         return panel;
     }
 
+
     // Update the order summary
     private void updateOrderSummary() {
-        JPanel orderSummaryPanel = (JPanel) mainPanel.getComponent(2);
+        // Ensure that orderSummaryPanel refers to the correct panel
+        JPanel orderSummaryPanel = (JPanel) mainPanel.getComponent(6); // Adjust the index to match the position of the order summary panel
         JScrollPane scrollPane = (JScrollPane) orderSummaryPanel.getComponent(0);
         JTextArea summaryTextArea = (JTextArea) scrollPane.getViewport().getView();
         StringBuilder summary = new StringBuilder();
         for (String item : currentOrder.getItems()) {
-            summary.append(item).append("\n");
+            summary.append(item).append(": $").append(currentItemPrice).append("\n");
         }
         summary.append("Total: $").append(currentOrder.getTotalPrice());
         summaryTextArea.setText(summary.toString());
     }
+
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Restaurant Kiosk");
