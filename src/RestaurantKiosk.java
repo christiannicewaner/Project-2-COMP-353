@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.*;
 
 public class RestaurantKiosk {
     private final JPanel mainPanel;
@@ -79,6 +80,7 @@ public class RestaurantKiosk {
                 String emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
                 if (emailField.getText().matches(emailPattern)) {
                     accountLabel.setText("Account: " + emailField.getText());
+                    emailField.setText("");
                     cardLayout.show(mainPanel, "Menu");
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid email address.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -111,6 +113,7 @@ public class RestaurantKiosk {
                 String phonePattern = "^\\d{3}-\\d{3}-\\d{4}$";
                 if (phoneField.getText().matches(phonePattern)) {
                     accountLabel.setText("Account: " + phoneField.getText());
+                    phoneField.setText("");
                     cardLayout.show(mainPanel, "Menu");
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -735,32 +738,61 @@ public class RestaurantKiosk {
 
         JLabel titleLabel = new JLabel("Enter Card Information", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
-        panel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.add(titleLabel, BorderLayout.CENTER);
 
+        panel.add(northPanel, BorderLayout.NORTH);
+
+        // Using GridBagLayout to center components
+        JPanel inputPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.insets = new Insets(10, 10, 10, 10); // padding
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        JLabel cardNumberLabel = new JLabel("Card Number:");
         JTextField cardNumberField = new JTextField(20);
-        inputPanel.add(new JLabel("Card Number:"));
-        inputPanel.add(cardNumberField);
+
+        inputPanel.add(cardNumberLabel, gbc);
+        inputPanel.add(cardNumberField, gbc);
 
         JButton payButton = new JButton("Pay");
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cardNumber = cardNumberField.getText();
-                // Handle payment process
-                JOptionPane.showMessageDialog(panel, "Payment processed for card: " + cardNumber);
-                cardLayout.show(mainPanel, "Home");
-                mainPanel.revalidate();
-                mainPanel.repaint();
+                if (isValidCardNumber(cardNumber)) {
+                    String lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
+                    // Handle payment process
+                    JOptionPane.showMessageDialog(panel, "Payment processed for card ending in: " + lastFourDigits);
+                    currentOrder.clear();
+                    accountLabel.setText("");
+                    cardNumberField.setText("");
+                    cardLayout.show(mainPanel, "Home");
+                    mainPanel.revalidate();
+                    mainPanel.repaint();
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Invalid card number. Please enter a valid credit card number.");
+                }
             }
         });
 
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        inputPanel.add(payButton, gbc);
+
         panel.add(inputPanel, BorderLayout.CENTER);
-        panel.add(payButton, BorderLayout.SOUTH);
 
         return panel;
+    }
+
+    private boolean isValidCardNumber(String cardNumber) {
+        String regex = "^(\\d{4}-){3}\\d{4}$|^\\d{16}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cardNumber);
+        return matcher.matches();
     }
 
     // Update the order summary
