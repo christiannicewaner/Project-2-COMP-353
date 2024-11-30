@@ -161,17 +161,17 @@ public class RestaurantKiosk {
         // Add title label to the top of the panel
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        JButton toMenuButton = new JButton("Continue as Guest");
+        JButton guestButton = new JButton("Continue as Guest");
         JButton emailLoginButton = new JButton("Login with Email");
         JButton phoneLoginButton = new JButton("Login with Phone");
 
         // Center-align each button
-        toMenuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        guestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         emailLoginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         phoneLoginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add action listener to the "Continue as Guest" button
-        toMenuButton.addActionListener(new ActionListener() {
+        guestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(mainPanel, "Menu");
@@ -179,7 +179,7 @@ public class RestaurantKiosk {
         });
 
         // Add buttons to the button panel
-        buttonPanel.add(toMenuButton);
+        buttonPanel.add(guestButton);
         buttonPanel.add(emailLoginButton);
         buttonPanel.add(phoneLoginButton);
 
@@ -202,27 +202,34 @@ public class RestaurantKiosk {
 
     // Menu Panel
     private JPanel createMenuPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel gridPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(20, 20, 20, 20); // Add spacing around each button
         gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Add the account label panel at the top
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(createAccountLabelPanel(), BorderLayout.EAST);
+        panel.add(topPanel, BorderLayout.NORTH);
 
         // Menu items
         String[] itemNames = {"Burger", "Pizza", "Pasta", "Salad"};
         double[] itemPrices = {9.99, 11.99, 12.99, 7.99};
+        String[] itemImages = {"src//Burger.jpg", "src//Pizza.jpg", "src//Pasta.jpg", "src//Salad.jpg"}; // Image file paths
 
         for (int i = 0; i < itemNames.length; i++) {
-            JButton itemButton = createMenuItemButton(itemNames[i], itemPrices[i]);
+            JButton itemButton = createMenuItemButtonWithImage(itemNames[i], itemPrices[i], itemImages[i]);
             gbc.gridx = i % 2;
             gbc.gridy = i / 2;
-            panel.add(itemButton, gbc);
+            gridPanel.add(itemButton, gbc);
         }
 
         JButton toOrderSummaryButton = new JButton("Order Summary");
         gbc.gridx = 0;
         gbc.gridy = itemNames.length / 2 + 1;
         gbc.gridwidth = 2;
-        panel.add(toOrderSummaryButton, gbc);
+        gridPanel.add(toOrderSummaryButton, gbc);
 
         toOrderSummaryButton.addActionListener(new ActionListener() {
             @Override
@@ -234,8 +241,49 @@ public class RestaurantKiosk {
             }
         });
 
+        // Add the grid panel to the center of the main panel
+        panel.add(gridPanel, BorderLayout.CENTER);
+
         return panel;
     }
+
+    // Create Menu Item Button with Resized Image
+    private JButton createMenuItemButtonWithImage(String itemName, double itemPrice, String imagePath) {
+        JButton button = new JButton("<html><center>" + itemName + "<br>$" + itemPrice + "</center></html>");
+
+        // Resize the image to a uniform size
+        ImageIcon icon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        button.setIcon(icon);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentItemName = itemName;
+                currentItemPrice = itemPrice;
+                switch (itemName) {
+                    case "Burger":
+                        cardLayout.show(mainPanel, "Customize Burger");
+                        break;
+                    case "Pizza":
+                        cardLayout.show(mainPanel, "Customize Pizza");
+                        break;
+                    case "Pasta":
+                        cardLayout.show(mainPanel, "Customize Pasta");
+                        break;
+                    case "Salad":
+                        cardLayout.show(mainPanel, "Customize Salad");
+                        break;
+                }
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        return button;
+    }
+
+
 
     // Create Menu Item Button
     private JButton createMenuItemButton(String itemName, double itemPrice) {
