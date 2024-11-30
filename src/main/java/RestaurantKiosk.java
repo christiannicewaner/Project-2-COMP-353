@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.*;
@@ -73,17 +71,14 @@ public class RestaurantKiosk {
         panel.add(emailField, BorderLayout.CENTER);
 
         JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
-                if (emailField.getText().matches(emailPattern)) {
-                    accountLabel.setText("Account: " + emailField.getText());
-                    emailField.setText("");
-                    cardLayout.show(mainPanel, "Menu");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Invalid email address.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        loginButton.addActionListener(e -> {
+            String emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
+            if (emailField.getText().matches(emailPattern)) {
+                accountLabel.setText("Account: " + emailField.getText());
+                emailField.setText("");
+                cardLayout.show(mainPanel, "Menu");
+            } else {
+                JOptionPane.showMessageDialog(panel, "Invalid email address.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         panel.add(loginButton, BorderLayout.SOUTH);
@@ -106,17 +101,14 @@ public class RestaurantKiosk {
         panel.add(phoneField, BorderLayout.CENTER);
 
         JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String phonePattern = "^\\d{3}-\\d{3}-\\d{4}$";
-                if (phoneField.getText().matches(phonePattern)) {
-                    accountLabel.setText("Account: " + phoneField.getText());
-                    phoneField.setText("");
-                    cardLayout.show(mainPanel, "Menu");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Invalid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        loginButton.addActionListener(e -> {
+            String phonePattern = "^\\d{3}-\\d{3}-\\d{4}$";
+            if (phoneField.getText().matches(phonePattern)) {
+                accountLabel.setText("Account: " + phoneField.getText());
+                phoneField.setText("");
+                cardLayout.show(mainPanel, "Menu");
+            } else {
+                JOptionPane.showMessageDialog(panel, "Invalid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         panel.add(loginButton, BorderLayout.SOUTH);
@@ -180,38 +172,20 @@ public class RestaurantKiosk {
         phoneLoginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Add action listener to the "Continue as Guest" button
-        guestButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentOrder.clear();
-                accountLabel.setText("");
-                cardLayout.show(mainPanel, "Menu");
-            }
+        guestButton.addActionListener(e -> {
+            currentOrder.clear();
+            accountLabel.setText("");
+            cardLayout.show(mainPanel, "Menu");
         });
 
         // Add action listener to the "Login with Email" button
-        emailLoginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Email Login");
-            }
-        });
+        emailLoginButton.addActionListener(e -> cardLayout.show(mainPanel, "Email Login"));
 
         // Add action listener to the "Login with Phone" button
-        phoneLoginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Phone Login");
-            }
-        });
+        phoneLoginButton.addActionListener(e -> cardLayout.show(mainPanel, "Phone Login"));
 
         // Add action listener to the "Help" button
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(panel, "Help is on the way.");
-            }
-        });
+        helpButton.addActionListener(e -> JOptionPane.showMessageDialog(panel, "Help is on the way."));
 
         // Add buttons to the button panel
         buttonPanel.add(guestButton);
@@ -278,20 +252,17 @@ public class RestaurantKiosk {
         gbc.gridwidth = 2;
         gridPanel.add(orderHistoryButton, gbc);
 
-        orderHistoryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!accountLabel.getText().isEmpty()) {
-                    String history = """
-                    10/25/2024
-                    18:34
-                    2 x Pizza: $23.98
-                    1 x Burger: $9.99
-                    Total: $33.97""";
-                    JOptionPane.showMessageDialog(panel, history, "Order History for " + accountLabel.getText(), JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please log in to view your order history.", "Order History", JOptionPane.WARNING_MESSAGE);
-                }
+        orderHistoryButton.addActionListener(e -> {
+            if (!accountLabel.getText().isEmpty()) {
+                String history = """
+                10/25/2024
+                18:34
+                2 x Pizza: $23.98
+                1 x Burger: $9.99
+                Total: $33.97""";
+                JOptionPane.showMessageDialog(panel, history, "Order History for " + accountLabel.getText(), JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please log in to view your order history.", "Order History", JOptionPane.WARNING_MESSAGE);
             }
         });
 
@@ -302,14 +273,11 @@ public class RestaurantKiosk {
         gbc.gridwidth = 2;
         gridPanel.add(toOrderSummaryButton, gbc);
 
-        toOrderSummaryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateOrderSummary();
-                cardLayout.show(mainPanel, "Order Summary");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        toOrderSummaryButton.addActionListener(e -> {
+            updateOrderSummary();
+            cardLayout.show(mainPanel, "Order Summary");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
 
         // Back to Home Button
@@ -319,14 +287,11 @@ public class RestaurantKiosk {
         gbc.gridwidth = 2;
         gridPanel.add(backToHomeButton, gbc);
 
-        backToHomeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Navigate back to the home screen
-                cardLayout.show(mainPanel, "Home");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backToHomeButton.addActionListener(e -> {
+            // Navigate back to the home screen
+            cardLayout.show(mainPanel, "Home");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
 
         // Add the grid panel to the center of the main panel
@@ -345,28 +310,25 @@ public class RestaurantKiosk {
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentItemName = itemName;
-                currentItemPrice = itemPrice;
-                switch (itemName) {
-                    case "Burger":
-                        cardLayout.show(mainPanel, "Customize Burger");
-                        break;
-                    case "Pizza":
-                        cardLayout.show(mainPanel, "Customize Pizza");
-                        break;
-                    case "Pasta":
-                        cardLayout.show(mainPanel, "Customize Pasta");
-                        break;
-                    case "Salad":
-                        cardLayout.show(mainPanel, "Customize Salad");
-                        break;
-                }
-                mainPanel.revalidate();
-                mainPanel.repaint();
+        button.addActionListener(e -> {
+            currentItemName = itemName;
+            currentItemPrice = itemPrice;
+            switch (itemName) {
+                case "Burger":
+                    cardLayout.show(mainPanel, "Customize Burger");
+                    break;
+                case "Pizza":
+                    cardLayout.show(mainPanel, "Customize Pizza");
+                    break;
+                case "Pasta":
+                    cardLayout.show(mainPanel, "Customize Pasta");
+                    break;
+                case "Salad":
+                    cardLayout.show(mainPanel, "Customize Salad");
+                    break;
             }
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         return button;
     }
@@ -401,24 +363,21 @@ public class RestaurantKiosk {
 
         // Add to Order button
         JButton addButton = new JButton("Add to Order");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StringBuilder customizations = new StringBuilder(currentItemName);
-                if (lettuceCheckBox.isSelected()) customizations.append(" + Lettuce");
-                if (ketchupCheckBox.isSelected()) customizations.append(" + Ketchup");
-                if (cheeseCheckBox.isSelected()) customizations.append(" + Cheese");
-                if (onionsCheckBox.isSelected()) customizations.append(" + Onions");
+        addButton.addActionListener(e -> {
+            StringBuilder customizations = new StringBuilder(currentItemName);
+            if (lettuceCheckBox.isSelected()) customizations.append(" + Lettuce");
+            if (ketchupCheckBox.isSelected()) customizations.append(" + Ketchup");
+            if (cheeseCheckBox.isSelected()) customizations.append(" + Cheese");
+            if (onionsCheckBox.isSelected()) customizations.append(" + Onions");
 
-                currentOrder.addItem(customizations.toString(), currentItemPrice);
-                lettuceCheckBox.setSelected(false);
-                ketchupCheckBox.setSelected(false);
-                cheeseCheckBox.setSelected(false);
-                onionsCheckBox.setSelected(false);
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+            currentOrder.addItem(customizations.toString(), currentItemPrice);
+            lettuceCheckBox.setSelected(false);
+            ketchupCheckBox.setSelected(false);
+            cheeseCheckBox.setSelected(false);
+            onionsCheckBox.setSelected(false);
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(addButton);
 
@@ -427,13 +386,10 @@ public class RestaurantKiosk {
 
         // Back to Menu button
         JButton backButton = new JButton("Back to Menu");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(backButton);
 
@@ -496,24 +452,21 @@ public class RestaurantKiosk {
 
         // Add to Order button
         JButton addButton = new JButton("Add to Order");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StringBuilder customizations = new StringBuilder(currentItemName);
-                if (pepperoniCheckBox.isSelected()) customizations.append(" + Pepperoni");
-                if (mushroomsCheckBox.isSelected()) customizations.append(" + Mushrooms");
-                if (olivesCheckBox.isSelected()) customizations.append(" + Olives");
-                if (onionsCheckBox.isSelected()) customizations.append(" + Onions");
+        addButton.addActionListener(e -> {
+            StringBuilder customizations = new StringBuilder(currentItemName);
+            if (pepperoniCheckBox.isSelected()) customizations.append(" + Pepperoni");
+            if (mushroomsCheckBox.isSelected()) customizations.append(" + Mushrooms");
+            if (olivesCheckBox.isSelected()) customizations.append(" + Olives");
+            if (onionsCheckBox.isSelected()) customizations.append(" + Onions");
 
-                currentOrder.addItem(customizations.toString(), currentItemPrice);
-                pepperoniCheckBox.setSelected(false);
-                mushroomsCheckBox.setSelected(false);
-                olivesCheckBox.setSelected(false);
-                onionsCheckBox.setSelected(false);
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+            currentOrder.addItem(customizations.toString(), currentItemPrice);
+            pepperoniCheckBox.setSelected(false);
+            mushroomsCheckBox.setSelected(false);
+            olivesCheckBox.setSelected(false);
+            onionsCheckBox.setSelected(false);
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(addButton);
 
@@ -522,13 +475,10 @@ public class RestaurantKiosk {
 
         // Back to Menu button
         JButton backButton = new JButton("Back to Menu");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(backButton);
 
@@ -589,24 +539,21 @@ public class RestaurantKiosk {
 
         // Add to Order button
         JButton addButton = new JButton("Add to Order");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StringBuilder customizations = new StringBuilder(currentItemName);
-                if (sauceCheckBox.isSelected()) customizations.append(" + Extra Sauce");
-                if (cheeseCheckBox.isSelected()) customizations.append(" + Extra Cheese");
-                if (garlicCheckBox.isSelected()) customizations.append(" + Garlic");
-                if (mushroomsCheckBox.isSelected()) customizations.append(" + Mushrooms");
+        addButton.addActionListener(e -> {
+            StringBuilder customizations = new StringBuilder(currentItemName);
+            if (sauceCheckBox.isSelected()) customizations.append(" + Extra Sauce");
+            if (cheeseCheckBox.isSelected()) customizations.append(" + Extra Cheese");
+            if (garlicCheckBox.isSelected()) customizations.append(" + Garlic");
+            if (mushroomsCheckBox.isSelected()) customizations.append(" + Mushrooms");
 
-                currentOrder.addItem(customizations.toString(), currentItemPrice);
-                sauceCheckBox.setSelected(false);
-                cheeseCheckBox.setSelected(false);
-                garlicCheckBox.setSelected(false);
-                mushroomsCheckBox.setSelected(false);
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+            currentOrder.addItem(customizations.toString(), currentItemPrice);
+            sauceCheckBox.setSelected(false);
+            cheeseCheckBox.setSelected(false);
+            garlicCheckBox.setSelected(false);
+            mushroomsCheckBox.setSelected(false);
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(addButton);
 
@@ -615,13 +562,10 @@ public class RestaurantKiosk {
 
         // Back to Menu button
         JButton backButton = new JButton("Back to Menu");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(backButton);
 
@@ -682,24 +626,21 @@ public class RestaurantKiosk {
 
         // Add to Order button
         JButton addButton = new JButton("Add to Order");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StringBuilder customizations = new StringBuilder(currentItemName);
-                if (croutonsCheckBox.isSelected()) customizations.append(" + Croutons");
-                if (dressingCheckBox.isSelected()) customizations.append(" + Dressing");
-                if (cheeseCheckBox.isSelected()) customizations.append(" + Cheese");
-                if (baconBitsCheckBox.isSelected()) customizations.append(" + Bacon Bits");
+        addButton.addActionListener(e -> {
+            StringBuilder customizations = new StringBuilder(currentItemName);
+            if (croutonsCheckBox.isSelected()) customizations.append(" + Croutons");
+            if (dressingCheckBox.isSelected()) customizations.append(" + Dressing");
+            if (cheeseCheckBox.isSelected()) customizations.append(" + Cheese");
+            if (baconBitsCheckBox.isSelected()) customizations.append(" + Bacon Bits");
 
-                currentOrder.addItem(customizations.toString(), currentItemPrice);
-                croutonsCheckBox.setSelected(false);
-                dressingCheckBox.setSelected(false);
-                cheeseCheckBox.setSelected(false);
-                baconBitsCheckBox.setSelected(false);
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+            currentOrder.addItem(customizations.toString(), currentItemPrice);
+            croutonsCheckBox.setSelected(false);
+            dressingCheckBox.setSelected(false);
+            cheeseCheckBox.setSelected(false);
+            baconBitsCheckBox.setSelected(false);
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(addButton);
 
@@ -708,13 +649,10 @@ public class RestaurantKiosk {
 
         // Back to Menu button
         JButton backButton = new JButton("Back to Menu");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonPanel.add(backButton);
 
@@ -760,16 +698,13 @@ public class RestaurantKiosk {
 
         // Cancel Order button
         JButton cancelButton = new JButton("Cancel Order");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Reset order and go to home screen
-                currentOrder.clear();
-                accountLabel.setText("");
-                cardLayout.show(mainPanel, "Home");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        cancelButton.addActionListener(e -> {
+            // Reset order and go to home screen
+            currentOrder.clear();
+            accountLabel.setText("");
+            cardLayout.show(mainPanel, "Home");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonsPanel.add(cancelButton);
 
@@ -778,14 +713,11 @@ public class RestaurantKiosk {
 
         // Back to Menu button
         JButton backToMenuButton = new JButton("Back to Menu");
-        backToMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Go to menu screen
-                cardLayout.show(mainPanel, "Menu");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backToMenuButton.addActionListener(e -> {
+            // Go to menu screen
+            cardLayout.show(mainPanel, "Menu");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonsPanel.add(backToMenuButton);
 
@@ -794,14 +726,11 @@ public class RestaurantKiosk {
 
         // Proceed to Payment button
         JButton proceedButton = new JButton("Proceed to Payment");
-        proceedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Go to payment screen
-                cardLayout.show(mainPanel, "Payment");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        proceedButton.addActionListener(e -> {
+            // Go to payment screen
+            cardLayout.show(mainPanel, "Payment");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
         buttonsPanel.add(proceedButton);
 
@@ -840,25 +769,22 @@ public class RestaurantKiosk {
 
         // Pay Button
         JButton payButton = new JButton("Pay");
-        payButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cardNumber = cardNumberField.getText();
-                if (isValidCardNumber(cardNumber)) {
-                    String lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
-                    // Handle payment process
-                    JOptionPane.showMessageDialog(panel, "Payment processed for card ending in: " + lastFourDigits);
-                    currentOrder.clear();
-                    accountLabel.setText("");
-                    cardNumberField.setText("");
-                    mainPanel.add(createProgressScreenPanel(), "Progress Screen");
-                    cardLayout.show(mainPanel, "Progress Screen");
-                    mainPanel.revalidate();
-                    mainPanel.repaint();
+        payButton.addActionListener(e -> {
+            String cardNumber = cardNumberField.getText();
+            if (isValidCardNumber(cardNumber)) {
+                String lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
+                // Handle payment process
+                JOptionPane.showMessageDialog(panel, "Payment processed for card ending in: " + lastFourDigits);
+                currentOrder.clear();
+                accountLabel.setText("");
+                cardNumberField.setText("");
+                mainPanel.add(createProgressScreenPanel(), "Progress Screen");
+                cardLayout.show(mainPanel, "Progress Screen");
+                mainPanel.revalidate();
+                mainPanel.repaint();
 
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Invalid card number. Please enter a valid credit card number.");
-                }
+            } else {
+                JOptionPane.showMessageDialog(panel, "Invalid card number. Please enter a valid credit card number.");
             }
         });
 
@@ -868,14 +794,11 @@ public class RestaurantKiosk {
 
         // Back to Order Summary Button
         JButton backButton = new JButton("Back to Order Summary");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Show the order summary screen
-                cardLayout.show(mainPanel, "Order Summary");
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        backButton.addActionListener(e -> {
+            // Show the order summary screen
+            cardLayout.show(mainPanel, "Order Summary");
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
 
         gbc.gridy = GridBagConstraints.RELATIVE;
@@ -929,11 +852,10 @@ public class RestaurantKiosk {
         panel.add(countdownLabel, BorderLayout.SOUTH);
 
         // SwingWorker to update progress
-        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+        SwingWorker<Void, Integer> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
-                String[] steps = {"Order Received", "Preparing Order", "Ready for Pickup!"};
-                for (int i = 0; i < steps.length; i++) {
+                for (int i = 0; i < 3; i++) {
                     Thread.sleep(6666);
                     publish(i + 1);
                 }
@@ -963,13 +885,14 @@ public class RestaurantKiosk {
             }
 
             private void startCountdown(JLabel label) {
-                new Thread (() -> {
-                    for (int i = 3; i > 0; i--){
+                new Thread(() -> {
+                    for (int i = 3; i > 0; i--) {
                         try {
                             int finalI = i;
                             SwingUtilities.invokeLater(() -> label.setText("Returning to home in " + finalI + "..."));
                             Thread.sleep(1500);
                         } catch (InterruptedException e) {
+                            //noinspection CallToPrintStackTrace
                             e.printStackTrace();
                         }
                     }
