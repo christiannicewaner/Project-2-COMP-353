@@ -12,7 +12,6 @@ public class RestaurantKiosk {
     private final Order currentOrder;
     private String currentItemName;
     private double currentItemPrice;
-    private String currentLanguage = "English";
 
     // Create the account label at the class level
     private final JLabel accountLabel = new JLabel("");
@@ -42,7 +41,6 @@ public class RestaurantKiosk {
         JPanel orderSummaryPanel = createOrderSummaryPanel();
         JPanel emailLoginPanel = createEmailLoginPanel();
         JPanel phoneLoginPanel = createPhoneLoginPanel();
-        JPanel languageSelectionPanel = createLanguageSelectionPanel();
 
         // Add Panels to Main Panel
         mainPanel.add(homePanel, "Home");
@@ -55,8 +53,7 @@ public class RestaurantKiosk {
         mainPanel.add(createPaymentPanel(), "Payment");
         mainPanel.add(emailLoginPanel, "Email Login");
         mainPanel.add(phoneLoginPanel, "Phone Login");
-        mainPanel.add(languageSelectionPanel, "Language Selection");
-        //mainPanel.add(createProgressScreenPanel(), "Progress Screen");
+
 
         // Show Home Panel Initially
         cardLayout.show(mainPanel, "Home");
@@ -175,7 +172,6 @@ public class RestaurantKiosk {
         JButton guestButton = new JButton("Continue as Guest");
         JButton emailLoginButton = new JButton("Login with Email");
         JButton phoneLoginButton = new JButton("Login with Phone");
-        JButton changeLanguageButton = new JButton("Change Language");
         JButton helpButton = new JButton("Help");
 
         // Center-align each button
@@ -207,14 +203,6 @@ public class RestaurantKiosk {
             }
         });
 
-        // Add action listener to the "Change Language" button
-        changeLanguageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Language Selection");
-            }
-        });
-
         // Add action listener to the "Help" button
         helpButton.addActionListener(new ActionListener() {
             @Override
@@ -242,84 +230,8 @@ public class RestaurantKiosk {
         imagePanel.setAlignmentY(-1.5F);
         panel.add(imagePanel, BorderLayout.PAGE_START);
 
-        // Add the "Change Language" button to the bottom left
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(changeLanguageButton, BorderLayout.WEST);
         bottomPanel.add(helpButton, BorderLayout.EAST); // Add the "Help" button to the bottom right
-        panel.add(bottomPanel, BorderLayout.SOUTH);
-
-        return panel;
-    }
-
-    // Language Selection Panel
-    private JPanel createLanguageSelectionPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-
-        // Create title label
-        JLabel titleLabel = new JLabel("Choose a Language", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 36)); // Set font size and style
-        panel.add(titleLabel, BorderLayout.NORTH);
-
-        // Create language buttons
-        JButton frenchButton = new JButton("French");
-        JButton germanButton = new JButton("German");
-        JButton spanishButton = new JButton("Spanish");
-        JButton backButton = new JButton("Back");
-
-        // Center-align each button
-        frenchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        germanButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        spanishButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Add action listeners to language buttons
-        frenchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentLanguage = "French";
-                cardLayout.show(mainPanel, "Home");
-            }
-        });
-        germanButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentLanguage = "German";
-                cardLayout.show(mainPanel, "Home");
-            }
-        });
-        spanishButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentLanguage = "Spanish";
-                cardLayout.show(mainPanel, "Home");
-            }
-        });
-
-        // Add action listener to back button
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Home");
-            }
-        });
-
-        // Add buttons to the button panel
-        buttonPanel.add(frenchButton);
-        buttonPanel.add(germanButton);
-        buttonPanel.add(spanishButton);
-
-        // Add the button panel to the center of the main panel
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Add some padding around buttons
-        centerPanel.add(buttonPanel, gbc);
-
-        panel.add(centerPanel, BorderLayout.CENTER);
-
-        // Add the back button to the bottom left
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(backButton, BorderLayout.WEST);
         panel.add(bottomPanel, BorderLayout.SOUTH);
 
         return panel;
@@ -750,6 +662,7 @@ public class RestaurantKiosk {
             public void actionPerformed(ActionEvent e) {
                 // Reset order and go to home screen
                 currentOrder.clear();
+                accountLabel.setText("");
                 cardLayout.show(mainPanel, "Home");
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -964,7 +877,6 @@ public class RestaurantKiosk {
         worker.execute();
         return panel;
     }
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Restaurant Kiosk");
