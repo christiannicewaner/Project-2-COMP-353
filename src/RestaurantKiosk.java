@@ -351,6 +351,31 @@ public class RestaurantKiosk {
             gridPanel.add(itemButton, gbc);
         }
 
+        // Order History Button
+        JButton orderHistoryButton = new JButton("Order History");
+        gbc.gridx = 0;
+        gbc.gridy = itemNames.length / 2;
+        gbc.gridwidth = 2;
+        gridPanel.add(orderHistoryButton, gbc);
+
+        orderHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!accountLabel.getText().isEmpty()) {
+                    String history = """
+                            10/25/2024
+                            18:34
+                            2 x Pizza: $23.98
+                            1 x Burger: $9.99
+                            Total: $33.97""";
+                    JOptionPane.showMessageDialog(panel, history, "Order History", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Please log in to view your order history.", "Order History", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        // Order Summary Button
         JButton toOrderSummaryButton = new JButton("Order Summary");
         gbc.gridx = 0;
         gbc.gridy = itemNames.length / 2 + 1;
