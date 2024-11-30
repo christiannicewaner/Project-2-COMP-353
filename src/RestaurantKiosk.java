@@ -177,6 +177,7 @@ public class RestaurantKiosk {
         JButton emailLoginButton = new JButton("Login with Email");
         JButton phoneLoginButton = new JButton("Login with Phone");
         JButton changeLanguageButton = new JButton("Change Language");
+        JButton helpButton = new JButton("Help");
 
         // Center-align each button
         guestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -215,6 +216,14 @@ public class RestaurantKiosk {
             }
         });
 
+        // Add action listener to the "Help" button
+        helpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(panel, "Help is on the way.");
+            }
+        });
+
         // Add buttons to the button panel
         buttonPanel.add(guestButton);
         buttonPanel.add(emailLoginButton);
@@ -237,6 +246,7 @@ public class RestaurantKiosk {
         // Add the "Change Language" button to the bottom left
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(changeLanguageButton, BorderLayout.WEST);
+        bottomPanel.add(helpButton, BorderLayout.EAST); // Add the "Help" button to the bottom right
         panel.add(bottomPanel, BorderLayout.SOUTH);
 
         return panel;
