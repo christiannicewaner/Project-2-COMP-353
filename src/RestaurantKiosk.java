@@ -183,6 +183,8 @@ public class RestaurantKiosk {
         guestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                currentOrder.clear();
+                accountLabel.setText("");
                 cardLayout.show(mainPanel, "Menu");
             }
         });
@@ -281,11 +283,11 @@ public class RestaurantKiosk {
             public void actionPerformed(ActionEvent e) {
                 if (!accountLabel.getText().isEmpty()) {
                     String history = """
-                        10/25/2024
-                        18:34
-                        2 x Pizza: $23.98
-                        1 x Burger: $9.99
-                        Total: $33.97""";
+                    10/25/2024
+                    18:34
+                    2 x Pizza: $23.98
+                    1 x Burger: $9.99
+                    Total: $33.97""";
                     JOptionPane.showMessageDialog(panel, history, "Order History for " + accountLabel.getText(), JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(panel, "Please log in to view your order history.", "Order History", JOptionPane.WARNING_MESSAGE);
@@ -305,6 +307,23 @@ public class RestaurantKiosk {
             public void actionPerformed(ActionEvent e) {
                 updateOrderSummary();
                 cardLayout.show(mainPanel, "Order Summary");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        // Back to Home Button
+        JButton backToHomeButton = new JButton("Back to Home");
+        gbc.gridx = 0;
+        gbc.gridy = itemNames.length / 2 + 2;
+        gbc.gridwidth = 2;
+        gridPanel.add(backToHomeButton, gbc);
+
+        backToHomeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Navigate back to the home screen
+                cardLayout.show(mainPanel, "Home");
                 mainPanel.revalidate();
                 mainPanel.repaint();
             }
@@ -376,9 +395,13 @@ public class RestaurantKiosk {
         // Nutritional Information Panel
         JPanel nutritionPanel = createBurgerInfoPanel();
 
-        // Done Customizing button
-        JButton doneButton = new JButton("Done Customizing");
-        doneButton.addActionListener(new ActionListener() {
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+        // Add to Order button
+        JButton addButton = new JButton("Add to Order");
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StringBuilder customizations = new StringBuilder(currentItemName);
@@ -397,13 +420,30 @@ public class RestaurantKiosk {
                 mainPanel.repaint();
             }
         });
+        buttonPanel.add(addButton);
+
+        // Add some space between buttons
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        // Back to Menu button
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        buttonPanel.add(backButton);
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
         panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
-        panel.add(doneButton, BorderLayout.SOUTH);
+        panel.add(buttonPanel, BorderLayout.SOUTH); // Add the button panel to the bottom
 
         return panel;
     }
+
 
     // Create Burger Nutritional Information Panel
     private JPanel createBurgerInfoPanel() {
@@ -450,9 +490,13 @@ public class RestaurantKiosk {
         // Nutritional Information Panel
         JPanel nutritionPanel = createPizzaInfoPanel();
 
-        // Done Customizing button
-        JButton doneButton = new JButton("Done Customizing");
-        doneButton.addActionListener(new ActionListener() {
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+        // Add to Order button
+        JButton addButton = new JButton("Add to Order");
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StringBuilder customizations = new StringBuilder(currentItemName);
@@ -471,13 +515,30 @@ public class RestaurantKiosk {
                 mainPanel.repaint();
             }
         });
+        buttonPanel.add(addButton);
+
+        // Add some space between buttons
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        // Back to Menu button
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        buttonPanel.add(backButton);
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
         panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
-        panel.add(doneButton, BorderLayout.SOUTH);
+        panel.add(buttonPanel, BorderLayout.SOUTH); // Add the button panel to the bottom
 
         return panel;
     }
+
 
     // Create Pizza Nutritional Information Panel
     private JPanel createPizzaInfoPanel() {
@@ -522,9 +583,13 @@ public class RestaurantKiosk {
         // Nutritional Information Panel
         JPanel nutritionPanel = createPastaInfoPanel();
 
-        // Done Customizing button
-        JButton doneButton = new JButton("Done Customizing");
-        doneButton.addActionListener(new ActionListener() {
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+        // Add to Order button
+        JButton addButton = new JButton("Add to Order");
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StringBuilder customizations = new StringBuilder(currentItemName);
@@ -543,13 +608,30 @@ public class RestaurantKiosk {
                 mainPanel.repaint();
             }
         });
+        buttonPanel.add(addButton);
+
+        // Add some space between buttons
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        // Back to Menu button
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        buttonPanel.add(backButton);
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
         panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
-        panel.add(doneButton, BorderLayout.SOUTH);
+        panel.add(buttonPanel, BorderLayout.SOUTH); // Add the button panel to the bottom
 
         return panel;
     }
+
 
     // Create Pasta Nutritional Information Panel
     private JPanel createPastaInfoPanel() {
@@ -594,9 +676,13 @@ public class RestaurantKiosk {
         // Nutritional Information Panel
         JPanel nutritionPanel = createSaladInfoPanel();
 
-        // Done Customizing button
-        JButton doneButton = new JButton("Done Customizing");
-        doneButton.addActionListener(new ActionListener() {
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+        // Add to Order button
+        JButton addButton = new JButton("Add to Order");
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StringBuilder customizations = new StringBuilder(currentItemName);
@@ -615,13 +701,30 @@ public class RestaurantKiosk {
                 mainPanel.repaint();
             }
         });
+        buttonPanel.add(addButton);
+
+        // Add some space between buttons
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        // Back to Menu button
+        JButton backButton = new JButton("Back to Menu");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Menu");
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        buttonPanel.add(backButton);
 
         panel.add(checkBoxPanel, BorderLayout.CENTER);
         panel.add(nutritionPanel, BorderLayout.EAST); // Add the nutrition panel to the right
-        panel.add(doneButton, BorderLayout.SOUTH);
+        panel.add(buttonPanel, BorderLayout.SOUTH); // Add the button panel to the bottom
 
         return panel;
     }
+
 
     // Create Salad Nutritional Information Panel
     private JPanel createSaladInfoPanel() {
