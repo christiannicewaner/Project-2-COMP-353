@@ -40,6 +40,7 @@ public class RestaurantKiosk {
         JPanel orderSummaryPanel = createOrderSummaryPanel();
         JPanel emailLoginPanel = createEmailLoginPanel();
         JPanel phoneLoginPanel = createPhoneLoginPanel();
+        JPanel languageSelectionPanel = createLanguageSelectionPanel();
 
         // Add Panels to Main Panel
         mainPanel.add(homePanel, "Home");
@@ -51,10 +52,12 @@ public class RestaurantKiosk {
         mainPanel.add(orderSummaryPanel, "Order Summary");
         mainPanel.add(emailLoginPanel, "Email Login");
         mainPanel.add(phoneLoginPanel, "Phone Login");
+        mainPanel.add(languageSelectionPanel, "Language Selection");
 
         // Show Home Panel Initially
         cardLayout.show(mainPanel, "Home");
     }
+
 
 
     // Email Login Panel
@@ -164,6 +167,7 @@ public class RestaurantKiosk {
         JButton guestButton = new JButton("Continue as Guest");
         JButton emailLoginButton = new JButton("Login with Email");
         JButton phoneLoginButton = new JButton("Login with Phone");
+        JButton changeLanguageButton = new JButton("Change Language");
 
         // Center-align each button
         guestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -178,27 +182,123 @@ public class RestaurantKiosk {
             }
         });
 
+        // Add action listener to the "Login with Email" button
+        emailLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Email Login");
+            }
+        });
+        // Add action listener to the "Login with Phone" button
+        phoneLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Phone Login");
+            }
+        });
+
+        // Add action listener to the "Change Language" button
+        changeLanguageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Language Selection");
+            }
+        });
+
         // Add buttons to the button panel
         buttonPanel.add(guestButton);
         buttonPanel.add(emailLoginButton);
         buttonPanel.add(phoneLoginButton);
 
-        // Image label
-        ImageIcon burgerIcon = new ImageIcon("src//Burger.jpg");
-        JLabel burgerLabel = new JLabel(burgerIcon);
-        burgerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Center the buttons in the main panel
+        // Add the button panel to the center of the main panel
         panel.add(buttonPanel, BorderLayout.CENTER);
 
+        // Image label
+        ImageIcon mcburgerIcon = new ImageIcon(new ImageIcon("src//McBurger.jpg").getImage().getScaledInstance(512, 512, Image.SCALE_SMOOTH));
+        JLabel mcburgerLabel = new JLabel(mcburgerIcon);
+        mcburgerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         // Add the image label to the bottom of the panel
-        panel.add(burgerLabel, BorderLayout.SOUTH);
+        panel.add(mcburgerLabel, BorderLayout.SOUTH);
+
+        // Add the "Change Language" button to the bottom left
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(changeLanguageButton, BorderLayout.WEST);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
 
         return panel;
     }
 
+    // Language Selection Panel
+    private JPanel createLanguageSelectionPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
+        // Create title label
+        JLabel titleLabel = new JLabel("Choose a Language", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 36)); // Set font size and style
+        panel.add(titleLabel, BorderLayout.NORTH);
 
+        // Create language buttons
+        JButton frenchButton = new JButton("French");
+        JButton germanButton = new JButton("German");
+        JButton spanishButton = new JButton("Spanish");
+        JButton backButton = new JButton("Back");
+
+        // Center-align each button
+        frenchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        germanButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        spanishButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Add action listeners to language buttons
+        frenchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Home");
+            }
+        });
+        germanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Home");
+            }
+        });
+        spanishButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Home");
+            }
+        });
+
+        // Add action listener to back button
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "Home");
+            }
+        });
+
+        // Add buttons to the button panel
+        buttonPanel.add(frenchButton);
+        buttonPanel.add(germanButton);
+        buttonPanel.add(spanishButton);
+
+        // Add the button panel to the center of the main panel
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Add some padding around buttons
+        centerPanel.add(buttonPanel, gbc);
+
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        // Add the back button to the bottom left
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(backButton, BorderLayout.WEST);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+
+        return panel;
+    }
 
     // Menu Panel
     private JPanel createMenuPanel() {
