@@ -904,6 +904,7 @@ public class RestaurantKiosk {
         // Create Progress Bar
         JProgressBar progressBar = new JProgressBar(0, 3);
         progressBar.setStringPainted(true);
+        progressBar.setString("Sending Order");
         panel.add(progressBar, BorderLayout.CENTER);
 
         // Countdown label
@@ -930,6 +931,7 @@ public class RestaurantKiosk {
                 switch (progress) {
                     case 1:
                         progressBar.setString("Order Received");
+
                         break;
                     case 2:
                         progressBar.setString("Preparing Order");
