@@ -189,6 +189,7 @@ public class RestaurantKiosk {
                 cardLayout.show(mainPanel, "Email Login");
             }
         });
+
         // Add action listener to the "Login with Phone" button
         phoneLoginButton.addActionListener(new ActionListener() {
             @Override
@@ -214,12 +215,15 @@ public class RestaurantKiosk {
         panel.add(buttonPanel, BorderLayout.CENTER);
 
         // Image label
-        ImageIcon mcburgerIcon = new ImageIcon(new ImageIcon("src//McBurger.jpg").getImage().getScaledInstance(512, 512, Image.SCALE_SMOOTH));
+        ImageIcon mcburgerIcon = new ImageIcon(new ImageIcon("src/McBurger.jpg").getImage().getScaledInstance(256, 256, Image.SCALE_SMOOTH));
         JLabel mcburgerLabel = new JLabel(mcburgerIcon);
         mcburgerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add the image label to the bottom of the panel
-        panel.add(mcburgerLabel, BorderLayout.SOUTH);
+        // Add the image label to the bottom center of the panel
+        JPanel imagePanel = new JPanel();
+        imagePanel.add(mcburgerLabel);
+        imagePanel.setAlignmentY(-1.5F);
+        panel.add(imagePanel, BorderLayout.PAGE_START);
 
         // Add the "Change Language" button to the bottom left
         JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -357,37 +361,6 @@ public class RestaurantKiosk {
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentItemName = itemName;
-                currentItemPrice = itemPrice;
-                switch (itemName) {
-                    case "Burger":
-                        cardLayout.show(mainPanel, "Customize Burger");
-                        break;
-                    case "Pizza":
-                        cardLayout.show(mainPanel, "Customize Pizza");
-                        break;
-                    case "Pasta":
-                        cardLayout.show(mainPanel, "Customize Pasta");
-                        break;
-                    case "Salad":
-                        cardLayout.show(mainPanel, "Customize Salad");
-                        break;
-                }
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
-        });
-        return button;
-    }
-
-
-
-    // Create Menu Item Button
-    private JButton createMenuItemButton(String itemName, double itemPrice) {
-        JButton button = new JButton(itemName + " - $" + itemPrice);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
