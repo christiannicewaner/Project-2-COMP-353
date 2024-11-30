@@ -12,6 +12,16 @@ public class RestaurantKiosk {
     private String currentItemName;
     private double currentItemPrice;
 
+    // Create the account label at the class level
+    private final JLabel accountLabel = new JLabel("");
+
+    // Method to create the label panel
+    private JPanel createAccountLabelPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(accountLabel, BorderLayout.EAST);
+        return panel;
+    }
+
     public RestaurantKiosk() {
         // Setup Main Panel with CardLayout
         cardLayout = new CardLayout();
@@ -64,6 +74,7 @@ public class RestaurantKiosk {
             public void actionPerformed(ActionEvent e) {
                 String emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
                 if (emailField.getText().matches(emailPattern)) {
+                    accountLabel.setText("Account: " + emailField.getText());
                     cardLayout.show(mainPanel, "Menu");
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid email address.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -74,6 +85,7 @@ public class RestaurantKiosk {
 
         return panel;
     }
+
 
     // Phone Login Panel
     private JPanel createPhoneLoginPanel() {
@@ -92,6 +104,7 @@ public class RestaurantKiosk {
             public void actionPerformed(ActionEvent e) {
                 String phonePattern = "^\\d{3}-\\d{3}-\\d{4}$";
                 if (phoneField.getText().matches(phonePattern)) {
+                    accountLabel.setText("Account: " + phoneField.getText());
                     cardLayout.show(mainPanel, "Menu");
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -102,7 +115,6 @@ public class RestaurantKiosk {
 
         return panel;
     }
-
 
     // Order class to keep track of items and total price
     public static class Order {
@@ -139,6 +151,9 @@ public class RestaurantKiosk {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
+        // Center-align buttons
+        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         // Create title label
         JLabel titleLabel = new JLabel("Welcome to McBurger!", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 36)); // Set font size and style
@@ -150,6 +165,11 @@ public class RestaurantKiosk {
         JButton emailLoginButton = new JButton("Login with Email");
         JButton phoneLoginButton = new JButton("Login with Phone");
 
+        // Center-align each button
+        toMenuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        emailLoginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        phoneLoginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         // Add action listener to the "Continue as Guest" button
         toMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -158,32 +178,26 @@ public class RestaurantKiosk {
             }
         });
 
-        // Add action listener to the "Login with Email" button
-        emailLoginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Email Login");
-            }
-        });
-
-        // Add action listener to the "Login with Phone" button
-        phoneLoginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "Phone Login");
-            }
-        });
-
         // Add buttons to the button panel
         buttonPanel.add(toMenuButton);
         buttonPanel.add(emailLoginButton);
         buttonPanel.add(phoneLoginButton);
 
+        // Image label
+        ImageIcon burgerIcon = new ImageIcon("src//Burger.jpg");
+        JLabel burgerLabel = new JLabel(burgerIcon);
+        burgerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         // Center the buttons in the main panel
         panel.add(buttonPanel, BorderLayout.CENTER);
 
+        // Add the image label to the bottom of the panel
+        panel.add(burgerLabel, BorderLayout.SOUTH);
+
         return panel;
     }
+
+
 
 
     // Menu Panel
@@ -258,6 +272,7 @@ public class RestaurantKiosk {
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
 
+        panel.add(createAccountLabelPanel(), BorderLayout.NORTH);
         JLabel titleLabel = new JLabel("Customize your Burger", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
         panel.add(titleLabel, BorderLayout.NORTH);
@@ -308,6 +323,7 @@ public class RestaurantKiosk {
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
 
+        panel.add(createAccountLabelPanel(), BorderLayout.NORTH);
         JLabel titleLabel = new JLabel("Customize your Pizza", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
         panel.add(titleLabel, BorderLayout.NORTH);
@@ -356,6 +372,7 @@ public class RestaurantKiosk {
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
 
+        panel.add(createAccountLabelPanel(), BorderLayout.NORTH);
         JLabel titleLabel = new JLabel("Customize your Pasta", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
         panel.add(titleLabel, BorderLayout.NORTH);
@@ -404,6 +421,7 @@ public class RestaurantKiosk {
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
 
+        panel.add(createAccountLabelPanel(), BorderLayout.NORTH);
         JLabel titleLabel = new JLabel("Customize your Salad", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // Set font size and style
         panel.add(titleLabel, BorderLayout.NORTH);
@@ -453,6 +471,7 @@ public class RestaurantKiosk {
         summaryTextArea.setEditable(false);
         panel.add(new JScrollPane(summaryTextArea), BorderLayout.CENTER);
 
+        panel.add(createAccountLabelPanel(), BorderLayout.NORTH);
         JButton backButton = new JButton("Back to Home");
         backButton.addActionListener(new ActionListener() {
             @Override
